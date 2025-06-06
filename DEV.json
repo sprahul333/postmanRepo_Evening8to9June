@@ -1,0 +1,15 @@
+{
+	"id": "10f2c9df-ac9e-43aa-82ee-f3bdd0270b96",
+	"name": "DEV",
+	"values": [
+		{
+			"key": "goRestURL",
+			"value": "https://godevrest.co.in",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-06-04T15:07:23.250Z",
+	"_postman_exported_using": "Postman/11.48.3"
+}

@@ -1,0 +1,15 @@
+{
+	"id": "b180a7c8-519b-483a-9b21-b55f8efa611b",
+	"name": "UAT",
+	"values": [
+		{
+			"key": "goRestURL",
+			"value": "https://gouatrest.co.in",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-06-04T15:07:34.008Z",
+	"_postman_exported_using": "Postman/11.48.3"
+}

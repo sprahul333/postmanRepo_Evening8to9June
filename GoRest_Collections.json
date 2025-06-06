@@ -1,0 +1,719 @@
+{
+	"info": {
+		"_postman_id": "37a9d343-81cf-40af-b6ea-994b627afb1f",
+		"name": "GoRest_Collections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4151610",
+		"_collection_link": "https://apitesting-1258.postman.co/workspace/API_Testing_Learning~39e1f586-9edd-4054-9d3c-a66e2d3ae822/collection/4151610-37a9d343-81cf-40af-b6ea-994b627afb1f?action=share&source=collection_link&creator=4151610"
+	},
+	"item": [
+		{
+			"name": "Create Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//pm --> Represents a postman object\r",
+							"\r",
+							"//L --> Local Variable (Scope is only during the time of the execution)\r",
+							"//D --> Data Variable (Data that we read from JSON or CSV Files)\r",
+							"//E --> Environment Variable (If we need to maintain seperate details for QA, DEV and other environements for URL)\r",
+							"//C --> Collection Variable (Stored at a collection variable)\r",
+							"//G --> Global Variable (Accessible across the whole postman tool)\r",
+							"\r",
+							"//pm.variables --> Determines a local variable\r",
+							"\r",
+							"//pm.response() --> Determines the response generated\r",
+							"//pm.response.json() --> Determines the response in the form of JSON Format\r",
+							"\r",
+							"const jsonBody=pm.response.json(); //Storing the response in the form of JSOn to jsonBody Variable\r",
+							"\r",
+							"const userID=jsonBody[\"id\"]; //Fetching the user ID from the JSON payload\r",
+							"\r",
+							"pm.variables.set(\"User_ID\",userID);\r",
+							"\r",
+							"//pm.test --> Represents a test case\r",
+							"\r",
+							"pm.test(\"Validating the JSON Response\",function(){\r",
+							"\r",
+							"    //pm.expect --> Assertion Library from Chai JS Team\r",
+							"\r",
+							"    //Checking whether the id attribute is a number or not\r",
+							"    pm.expect(jsonBody[\"id\"]).to.be.a(\"number\");\r",
+							"\r",
+							"    //Checking whether the value of email is present in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.null;\r",
+							"    //Checking whether the value of email is not undefined(Meaningful Value) in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.undefined;\r",
+							"\r",
+							"    //Checking whether we have the given json keys in the response body\r",
+							"    pm.expect(jsonBody).to.have.keys([\"id\",\"name\",\"email\",\"gender\",\"status\"]);\r",
+							"\r",
+							"    //Checking whether the gender is present in the expected data set\r",
+							"    //Expected Data Set: Male, Female, Others\r",
+							"\r",
+							"    //Declaring a JS Array\r",
+							"    let genders=[\"MALE\",\"FEMALE\",\"OTHERS\"];\r",
+							"\r",
+							"    //Checking whether the gender is present in the array or not\r",
+							"    //.includes is like contains function in JAVA\r",
+							"    pm.expect(genders).includes(jsonBody[\"gender\"].toUpperCase()); \r",
+							"\r",
+							"    //Checking whether the email id contains @ and .com\r",
+							"    pm.expect(jsonBody[\"email\"]).includes(\"@\").includes(\".com\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// //This tab is used to perform the pre-defined activities, preliminary activities before trigerring the api call\r",
+							"\r",
+							"// let genders = [\"male\", \"female\"];\r",
+							"\r",
+							"// //Math.random() --> Returns a value between 0 and 1\r",
+							"// //Math.floor() --> Takes the floor/lowest value (Ex: 5.6 --> Floor of 5.6 is 5)\r",
+							"// //genders.length --> Returns the size of the array (3)\r",
+							"// //Math.floor(Math.random() * genders.length) --> Picks a random values between 0 and size of the array \r",
+							"// let randomGender = genders[Math.floor(Math.random() * genders.length)];\r",
+							"\r",
+							"// //It is used to print the data onto the console\r",
+							"// console.log(randomGender);\r",
+							"\r",
+							"// pm.variables.set(\"Gender\", randomGender);\r",
+							"\r",
+							"// let status = [\"active\", \"inactive\"];\r",
+							"\r",
+							"// let randomStatus = status[Math.floor(Math.random() * status.length)];\r",
+							"\r",
+							"// pm.variables.set(\"Status\", randomStatus);\r",
+							"\r",
+							"// //Whatever value that is generated from the random function, we are storing it in a local variable\r",
+							"// pm.variables.set(\"Name\", \"{{$randomFirstName}}\");\r",
+							"// pm.variables.set(\"Email\", \"{{$randomEmail}}\");\r",
+							"\r",
+							"// //In the older versions of POSTMAN, we can use the following syntax to replace the variable with the random value\r",
+							"// // pm.variables.set(\"DummyValue\",pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+							"\r",
+							"// // console.log(pm.variables.get(\"DummyValue\"));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{Name}}\",\r\n    \"gender\": \"{{Gender}}\",\r\n    \"email\": \"{{Email}}\",\r\n    \"status\": \"{{Status}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users - Query parameters",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check if the response body contains the correct number of users\", \r",
+							"            function () {\r",
+							"//const means no one cannot change the data of the variable\r",
+							"const response = pm.response.json();\r",
+							"\r",
+							"let queryParameters=pm.request.url.query; //Getting the array of query Parameters\r",
+							"\r",
+							"let noOfPages=queryParameters.filter(queryParameters=> queryParameters.key == \"per_page\").value;\r",
+							"    console.log(noOfPages + \" No Of Pages\");\r",
+							"\r",
+							"if(noOfPages==undefined) //If the per_page attribute is not found in query parameter, the it returns undefined \r",
+							"//If the value is undefined, then set the total number of pages as 10\r",
+							"{\r",
+							"    noOfPages=\"10\";\r",
+							"}\r",
+							"\r",
+							"\r",
+							"var listOfUserID=response.filter(response => response[\"status\"]=='Active' && response[\"gender\"].toUpperCase()=='MALE')\r",
+							"    .map(response=>response[\"id\"]);\r",
+							"\r",
+							"//Convert a String to a number --> Number(<string_variable>);\r",
+							"pm.expect(listOfUserID.length).to.be.lessThanOrEqual(Number(noOfPages));\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}?gender=male&status=active",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"query": [
+						{
+							"key": "gender",
+							"value": "male"
+						},
+						{
+							"key": "status",
+							"value": "active"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users - Query parameters - Another Example",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}?name=kumar&status=active&per_page=20&pagenumber=2",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "kumar"
+						},
+						{
+							"key": "status",
+							"value": "active"
+						},
+						{
+							"key": "per_page",
+							"value": "20"
+						},
+						{
+							"key": "pagenumber",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBody=pm.response.json(); //Parsing the JSON Response Body\r",
+							"\r",
+							"pm.test(\"Validating the JSON Response\",function(){\r",
+							"\r",
+							"    //pm.expect --> Assertion Library from Chai JS Team\r",
+							"\r",
+							"    //Checking whether the id attribute is a number or not\r",
+							"    pm.expect(jsonBody[\"id\"]).to.be.a(\"number\");\r",
+							"\r",
+							"    //Checking whether the value of email is present in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.null;\r",
+							"    //Checking whether the value of email is not undefined(Meaningful Value) in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.undefined;\r",
+							"\r",
+							"    //Checking whether we have the given json keys in the response body\r",
+							"    pm.expect(jsonBody).to.have.keys([\"id\",\"name\",\"email\",\"gender\",\"status\"]);\r",
+							"\r",
+							"    //Checking whether the gender is present in the expected data set\r",
+							"    //Expected Data Set: Male, Female, Others\r",
+							"\r",
+							"    //Declaring a JS Array\r",
+							"    let genders=[\"MALE\",\"FEMALE\",\"OTHERS\"];\r",
+							"\r",
+							"    //Checking whether the gender is present in the array or not\r",
+							"    //.includes is like contains function in JAVA\r",
+							"    pm.expect(genders).includes(jsonBody[\"gender\"].toUpperCase()); \r",
+							"\r",
+							"    //Checking whether the email id contains @ and .com\r",
+							"    pm.expect(jsonBody[\"email\"]).includes(\"@\").includes(\".com\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBody=pm.response.json(); //Parsing the JSON Response Body\r",
+							"pm.test(\"Validating the JSON Response\",function(){\r",
+							"\r",
+							"    //pm.expect --> Assertion Library from Chai JS Team\r",
+							"\r",
+							"    //Checking whether the id attribute is a number or not\r",
+							"    pm.expect(jsonBody[\"id\"]).to.be.a(\"number\");\r",
+							"\r",
+							"    //Checking whether the value of email is present in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.null;\r",
+							"    //Checking whether the value of email is not undefined(Meaningful Value) in the JSON payload\r",
+							"    pm.expect(jsonBody[\"email\"]).is.not.undefined;\r",
+							"\r",
+							"    //Checking whether we have the given json keys in the response body\r",
+							"    pm.expect(jsonBody).to.have.keys([\"id\",\"name\",\"email\",\"gender\",\"status\"]);\r",
+							"\r",
+							"    //Checking whether the gender is present in the expected data set\r",
+							"    //Expected Data Set: Male, Female, Others\r",
+							"\r",
+							"    //Declaring a JS Array\r",
+							"    let genders=[\"MALE\",\"FEMALE\",\"OTHERS\"];\r",
+							"\r",
+							"    //Checking whether the gender is present in the array or not\r",
+							"    //.includes is like contains function in JAVA\r",
+							"    pm.expect(genders).includes(jsonBody[\"gender\"].toUpperCase()); \r",
+							"\r",
+							"    //Checking whether the email id contains @ and .com\r",
+							"    pm.expect(jsonBody[\"email\"]).includes(\"@\").includes(\".com\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\":\"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer 9ee31d62ba2aa3329d51d054896e96ad9f132437c190f2a42145dfb659f8c431\" -XPATCH \"https://gorest.co.in/public/v2/users/7439513\" -d '{\"name\":\"Allasani Peddana\", \"email\":\"allasani.peddana@15ce.com\", \"status\":\"active\"}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Creating new Posts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": {{User_ID}},\r\n    \"title\": \"Pecus catena qui aspicio spes esse atrox.\",\r\n    \"body\": \"Distinctio supra eveniet. Baiulus tunc damnatio. Adimpleo aduro vesper. Utique corona alienus. Adipisci acerbitas sed. Tantum coniuratio ager. Summisse pecunia vulgivagus. Quasi terga dolor. Eius acidus aliquid. Aggredior cornu vehemens. Aeger uter acquiro.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID/posts",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID",
+						"posts"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check For User Posts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID/posts",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID",
+						"posts"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"pm.test(\"Validating the response body\",function(){\r",
+							"\r",
+							"    const data=pm.response.text(); //Parsing the response in the form of a text\r",
+							"\r",
+							"    pm.expect(data).to.eql(''); //Response body should be empty as the status code is 204\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer 9ee31d62ba2aa3329d51d054896e96ad9f132437c190f2a42145dfb659f8c431\" -XDELETE \"https://gorest.co.in/public/v2/users/7439513\""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm User Deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validate JSON Response\",function(){\r",
+							"    const response=pm.response.json();\r",
+							"\r",
+							"    //Checking whether the JSON payload has the json key \"message\"\r",
+							"    pm.expect(response).to.have.property('message');\r",
+							"\r",
+							"    pm.expect(response[\"message\"]).to.be.eql(\"Resource not found\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{goRestURL}}{{usersEndPoint}}/:userID",
+					"host": [
+						"{{goRestURL}}{{usersEndPoint}}"
+					],
+					"path": [
+						":userID"
+					],
+					"variable": [
+						{
+							"key": "userID",
+							"value": "{{User_ID}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -i -H \"Accept:application/json\" -H \"Content-Type:application/json\" -H \"Authorization: Bearer 9ee31d62ba2aa3329d51d054896e96ad9f132437c190f2a42145dfb659f8c431\" -XDELETE \"https://gorest.co.in/public/v2/users/7439513\""
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"\r",
+					"//pm.iterationData() --> Will help us in reading the data from the csv/json file\r",
+					"//Whatever data that we have read we are converting into a Javascript object\r",
+					"\r",
+					"//If we are unable to fetch the data from CSV File, then generate a random set of data\r",
+					"//Else read the data from the CSV/JSON File\r",
+					"if(pm.iterationData.get(\"Name\") == undefined)\r",
+					"{\r",
+					"    //This tab is used to perform the pre-defined activities, preliminary activities before trigerring the api call\r",
+					"\r",
+					"let genders = [\"male\", \"female\"];\r",
+					"\r",
+					"//Math.random() --> Returns a value between 0 and 1\r",
+					"//Math.floor() --> Takes the floor/lowest value (Ex: 5.6 --> Floor of 5.6 is 5)\r",
+					"//genders.length --> Returns the size of the array (3)\r",
+					"//Math.floor(Math.random() * genders.length) --> Picks a random values between 0 and size of the array \r",
+					"let randomGender = genders[Math.floor(Math.random() * genders.length)];\r",
+					"\r",
+					"//It is used to print the data onto the console\r",
+					"console.log(randomGender);\r",
+					"\r",
+					"pm.variables.set(\"Gender\", randomGender);\r",
+					"\r",
+					"let status = [\"active\", \"inactive\"];\r",
+					"\r",
+					"let randomStatus = status[Math.floor(Math.random() * status.length)];\r",
+					"\r",
+					"pm.variables.set(\"Status\", randomStatus);\r",
+					"\r",
+					"//Whatever value that is generated from the random function, we are storing it in a local variable\r",
+					"pm.variables.set(\"Name\", \"{{$randomFirstName}}\");\r",
+					"pm.variables.set(\"Email\", \"{{$randomEmail}}\");\r",
+					"\r",
+					"//In the older versions of POSTMAN, we can use the following syntax to replace the variable with the random value\r",
+					"// pm.variables.set(\"DummyValue\",pm.variables.replaceIn(\"{{$randomFirstName}}\"));\r",
+					"\r",
+					"// console.log(pm.variables.get(\"DummyValue\"));\r",
+					"\r",
+					"}\r",
+					"\r",
+					"else \r",
+					"{\r",
+					"    //Data that is being pushed from CSV/JSON file will be stored in the collection variables\r",
+					"    pm.collectionVariables.set(\"requestData\",pm.iterationData.toObject());\r",
+					"}\r",
+					"\r",
+					"pm.request.headers.add({\r",
+					"        key: 'Authorization',\r",
+					"        value: pm.collectionVariables.get(\"authToken\")\r",
+					"    });\r",
+					"\r",
+					"pm.request.headers.add({\r",
+					"        key: 'Content-Type',\r",
+					"        value: pm.globals.get(\"contentType\")\r",
+					"    });\r",
+					"\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Validating the Response Time\",function(){\r",
+					"    //pm.response.responseTime --> Returns the time taken to generate the response\r",
+					"    pm.expect(pm.response.responseTime).to.be.lessThan(2000); //Response time should be less than 2000 milli seconds\r",
+					"});\r",
+					"\r",
+					"// pm.request.method --> Tells what kind of HTTP Call is being performed\r",
+					"// pm.request.name --> Returns the name of the end point\r",
+					"\r",
+					"if(pm.request.method.toUpperCase() == 'GET')\r",
+					"{\r",
+					"    //pm.info.requestName --> It is used to get the name of the API Request that we are performing\r",
+					"    if(pm.info.requestName.toUpperCase() == 'CONFIRM USER DELETED')\r",
+					"    {\r",
+					"        pm.test(\"Validating the status code\",function(){\r",
+					"                //pm.response.code --> Returns the status code\r",
+					"                pm.expect(pm.response.code).to.eql(404); //404 --> Page/Record not found\r",
+					"            });\r",
+					"    }\r",
+					"\r",
+					"    else {\r",
+					"        pm.test(\"Validating the status code\",function(){\r",
+					"            //pm.response.code --> Returns the status code\r",
+					"            pm.expect(pm.response.code).to.eql(200); //200 --> Response Generated Successfully\r",
+					"        });\r",
+					"    }\r",
+					"}\r",
+					"\r",
+					"else if(pm.request.method.toUpperCase() == 'POST')\r",
+					"{\r",
+					"    pm.test(\"Validating the status code\",function(){\r",
+					"        //pm.response.code --> Returns the status code\r",
+					"        pm.expect(pm.response.code).to.eql(201); //201 --> Response Generated and along with that resource is created\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"else if(pm.request.method.toUpperCase() == 'PUT' || pm.request.method.toUpperCase() == 'PATCH')\r",
+					"{\r",
+					"    pm.test(\"Validating the status code\",function(){\r",
+					"        //pm.response.code --> Returns the status code\r",
+					"        pm.expect(pm.response.code).to.eql(200); //200 --> Response Generated Successfully\r",
+					"    });\r",
+					"}\r",
+					"\r",
+					"else if(pm.request.method == 'DELETE')\r",
+					"{\r",
+					"    pm.test(\"Validating the status code\",function(){\r",
+					"        //pm.response.code --> Returns the status code\r",
+					"        pm.expect(pm.response.code).to.eql(204); //204 --> Request is processed successfully but there is no information from the server to be displayed\r",
+					"        \r",
+					"    });\r",
+					"}\r",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": "Bearer 9ee31d62ba2aa3329d51d054896e96ad9f132437c190f2a42145dfb659f8c431",
+			"type": "string"
+		},
+		{
+			"key": "usersEndPoint",
+			"value": "/public/v2/users",
+			"type": "string"
+		},
+		{
+			"key": "requestData",
+			"value": ""
+		}
+	]
+}
